@@ -1,0 +1,155 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type Timestamp = int;
+type SignalMessage = 
+ record {
+   conversationId: nat;
+   from: UserId;
+   id: nat;
+   kind: SignalKind;
+   payload: text;
+   sentAt: Timestamp;
+   to: UserId;
+ };
+type SignalKind = 
+ variant {
+   answer;
+   iceCandidate;
+   offer;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Profile = 
+ record {
+   avatar: opt text;
+   displayName: text;
+   id: UserId;
+   lastSeen: Timestamp;
+   status: OnlineStatus;
+ };
+type OnlineStatus = 
+ variant {
+   away;
+   offline;
+   online;
+ };
+type Message = 
+ record {
+   body: text;
+   conversationId: nat;
+   id: nat;
+   read: bool;
+   sender: UserId;
+   sentAt: Timestamp;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type Conversation = 
+ record {
+   id: nat;
+   lastMessageAt: Timestamp;
+   lastMessagePreview: text;
+   participantA: UserId;
+   participantB: UserId;
+   unreadA: nat;
+   unreadB: nat;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type CallStatus = 
+ variant {
+   declined;
+   ended;
+   missed;
+   ongoing;
+   ringing;
+ };
+type CallRecord = 
+ record {
+   callee: UserId;
+   caller: UserId;
+   conversationId: nat;
+   endedAt: opt Timestamp;
+   id: nat;
+   kind: CallKind;
+   startedAt: Timestamp;
+   status: CallStatus;
+ };
+type CallKind = 
+ variant {
+   audio;
+   video;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  acceptCall: (callId: nat) -> ();
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  declineCall: (callId: nat) -> ();
+  endCall: (callId: nat) -> ();
+  execute: (qJson: text) -> (Result) query;
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getConversation: (conversationId: nat) -> (opt Conversation) query;
+  getMyProfile: () -> (opt Profile) query;
+  isCallerAdmin: () -> (bool) query;
+  listCalls: (conversationId: nat) -> (vec CallRecord) query;
+  listConversations: () -> (vec Conversation) query;
+  listMessages: (conversationId: nat) -> (vec Message) query;
+  listUsers: () -> (vec Profile) query;
+  markConversationRead: (conversationId: nat) -> ();
+  pollSignals: (conversationId: nat) -> (vec SignalMessage) query;
+  schema: () -> (text) query;
+  sendMessage: (conversationId: nat, body: text) -> (Message);
+  sendSignal: (conversationId: nat, to: UserId, kind: SignalKind, payload:
+   text) -> ();
+  startCall: (conversationId: nat, kind: CallKind) -> (nat);
+  startConversation: (other: UserId) -> (nat);
+  updateProfile: (displayName: text, avatar: opt text) -> (Profile);
+}

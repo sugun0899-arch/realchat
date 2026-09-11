@@ -1,0 +1,18 @@
+{
+  "overview": "REALCHAT is a real-time chat and video call web app where users sign in with Internet Identity, message each other live, and start one-on-one video calls.",
+  "features": [
+    "Sign in with Internet Identity and manage a profile",
+    "Browse a directory of users to chat or call",
+    "Send and receive live one-on-one messages",
+    "Start one-on-one video calls with WebRTC",
+    "In-call controls for mute, camera, and end call"
+  ],
+  "category": "chat-app",
+  "tags": [
+    "chat",
+    "video-call",
+    "real-time",
+    "communication"
+  ],
+  "last_updated": "2026-09-11T15:17:25.651Z"
+}

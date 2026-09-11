@@ -1,0 +1,174 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__386906547<Principal, UserRole__91647283>
+  };
+type CallKind__200769811 = {#audio; #video};
+type CallKind__556826843 = {#audio; #video};
+type CallRecord__344119551 =
+  {
+    callee : UserId__1023572875;
+    caller : UserId__1023572875;
+    conversationId : Nat;
+    endedAt : ?Timestamp__753029554;
+    id : Nat;
+    kind : CallKind__556826843;
+    startedAt : Timestamp__753029554;
+    status : CallStatus__259030741
+  };
+type CallRecord__586352735 =
+  {
+    callee : UserId__102129923;
+    caller : UserId__102129923;
+    conversationId : Nat;
+    endedAt : ?Timestamp__744158129;
+    id : Nat;
+    kind : CallKind__200769811;
+    startedAt : Timestamp__744158129;
+    status : CallStatus__790832272
+  };
+type CallStatus__259030741 = {#declined; #ended; #missed; #ongoing; #ringing};
+type CallStatus__790832272 = {#declined; #ended; #missed; #ongoing; #ringing};
+type ChatState__766108647 =
+  {
+    calls : Map__386906547<Nat, CallRecord__586352735>;
+    conversations : Map__386906547<Nat, Conversation__728970663>;
+    messages : Map__386906547<Nat, List__89170296<Message__254171884>>;
+    var nextCallId : Nat;
+    var nextConversationId : Nat;
+    var nextMessageId : Nat;
+    var nextSignalId : Nat;
+    profiles : Map__386906547<UserId__102129923, Profile__890097603>;
+    signals : Map__386906547<Nat, List__89170296<SignalMessage__661760578>>
+  };
+type Conversation__686238356 =
+  {
+    id : Nat;
+    lastMessageAt : Timestamp__753029554;
+    lastMessagePreview : Text;
+    participantA : UserId__1023572875;
+    participantB : UserId__1023572875;
+    unreadA : Nat;
+    unreadB : Nat
+  };
+type Conversation__728970663 =
+  {
+    id : Nat;
+    lastMessageAt : Timestamp__744158129;
+    lastMessagePreview : Text;
+    participantA : UserId__102129923;
+    participantB : UserId__102129923;
+    unreadA : Nat;
+    unreadB : Nat
+  };
+type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
+type Internal__161573640<K, V> =
+  {children : [var ?Node__430031793<K, V>]; data : Data__265875254<K, V>};
+type Leaf__1045638083<K, V> = {data : Data__265875254<K, V>};
+type List__1004628775<T> =
+  {
+    var blockIndex : Nat__58649523;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__58649523
+  };
+type List__89170296<T> = List__1004628775<T>;
+type Map__13625999<K, V> =
+  {var root : Node__430031793<K, V>; var size : Nat__58649523};
+type Map__386906547<K, V> = Map__670138087<K, V>;
+type Map__670138087<K, V> = Map__13625999<K, V>;
+type Message__254171884 =
+  {
+    body : Text;
+    conversationId : Nat;
+    id : Nat;
+    read : Bool;
+    sender : UserId__102129923;
+    sentAt : Timestamp__744158129
+  };
+type Message__454780518 =
+  {
+    body : Text;
+    conversationId : Nat;
+    id : Nat;
+    read : Bool;
+    sender : UserId__1023572875;
+    sentAt : Timestamp__753029554
+  };
+type Nat__58649523 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__679825786 =
+  {
+    accessControlState : AccessControlState__201339279;
+    chatState : ChatState__766108647
+  };
+type Node__430031793<K, V> =
+  {#internal : Internal__161573640<K, V>; #leaf : Leaf__1045638083<K, V>};
+type OldActor__232881591 = {};
+type OnlineStatus__549209835 = {#away; #offline; #online};
+type OnlineStatus__941153140 = {#away; #offline; #online};
+type Profile__1007769511 =
+  {
+    avatar : ?Text;
+    displayName : Text;
+    id : UserId__1023572875;
+    lastSeen : Timestamp__753029554;
+    status : OnlineStatus__549209835
+  };
+type Profile__890097603 =
+  {
+    avatar : ?Text;
+    displayName : Text;
+    id : UserId__102129923;
+    lastSeen : Timestamp__744158129;
+    status : OnlineStatus__941153140
+  };
+type SignalKind__211307527 = {#answer; #iceCandidate; #offer};
+type SignalKind__586733466 = {#answer; #iceCandidate; #offer};
+type SignalMessage__454778772 =
+  {
+    conversationId : Nat;
+    from : UserId__1023572875;
+    id : Nat;
+    kind : SignalKind__586733466;
+    payload : Text;
+    sentAt : Timestamp__753029554;
+    to : UserId__1023572875
+  };
+type SignalMessage__661760578 =
+  {
+    conversationId : Nat;
+    from : UserId__102129923;
+    id : Nat;
+    kind : SignalKind__211307527;
+    payload : Text;
+    sentAt : Timestamp__744158129;
+    to : UserId__102129923
+  };
+type Timestamp__744158129 = Int;
+type Timestamp__753029554 = Int;
+type UserId__102129923 = Principal;
+type UserId__1023572875 = Principal;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260911_000000" : (_old : OldActor__232881591) -> NewActor__679825786
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__386906547<Principal, UserRole__91647283>
+    };
+  stable chatState :
+    {
+      calls : Map__386906547<Nat, CallRecord__344119551>;
+      conversations : Map__386906547<Nat, Conversation__686238356>;
+      messages : Map__386906547<Nat, List__89170296<Message__454780518>>;
+      var nextCallId : Nat;
+      var nextConversationId : Nat;
+      var nextMessageId : Nat;
+      var nextSignalId : Nat;
+      profiles : Map__386906547<UserId__1023572875, Profile__1007769511>;
+      signals : Map__386906547<Nat, List__89170296<SignalMessage__454778772>>
+    }
+};
